@@ -1,5 +1,7 @@
-// Function to fetch the most recent earthquakes for frontend
+const store = { data: null}
 
+// --- Function Definitions ---
+// Function to fetch the most recent earthquakes for frontend
 function getCurrentEarthquakes() {
     // USGS API
     const url= 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson';
@@ -19,6 +21,7 @@ function getCurrentEarthquakes() {
 
             // Iterate over each earthquake and add it to the list
             earthquakes.forEach((earthquake) => {
+                store.earthquake = earthquake
                 const properties = earthquake.properties;
                 const magnitude = properties.mag;
                 const location = properties.place;
@@ -38,6 +41,7 @@ function getCurrentEarthquakes() {
 
 function getEarthquakeMap(){
         // API endpoint URL for current earthquakes
+        // If I maintain the global store then I can get rid of this second API call
     const url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson';
 
     // Fetch data from the API
@@ -69,8 +73,36 @@ function getEarthquakeMap(){
         });
 }
 
-// Call the function to display the location of the earthquake on the map
+// Function to send a POST to save data
+function saveData() {
+    console.log(store.earthquake)
+    fetch('http://localhost:8080/save_data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ data: store.earthquake})
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Save failed');
+        }
+        console.log('Data saved successfully');
+    })
+    .catch(error => {
+        console.error('Error saving data:', error);
+    });
+}
+
+// Save button click
+
+// --- Function Calls ---
 getEarthquakeMap()
 
-// Call the function when the page loads (should this be replaced with React and events?)
+// Call the function when the page loads
 window.onload = getCurrentEarthquakes;
+
+// --- Event Listeners ---
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("save-button").addEventListener('click', saveData);
+});
