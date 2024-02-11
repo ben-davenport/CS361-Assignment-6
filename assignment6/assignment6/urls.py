@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from views import set_data, get_data
+from assignment6.views import set_data, get_data
 
 urlpatterns = [
     path('set-data/', set_data, name='set-data'),

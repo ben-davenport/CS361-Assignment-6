@@ -75,13 +75,14 @@ function getEarthquakeMap(){
 
 // Function to send a POST to save data
 function saveData() {
-    console.log(store.earthquake)
-    fetch('http://localhost:8000/save_data', {
+    const save_data = store.earthquake
+    console.log(save_data)
+    fetch('http://localhost:8000/set-data/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ data: store.earthquake})
+        body: JSON.stringify({ data: save_data})
     })
     .then(response => {
         if (!response.ok) {
@@ -93,8 +94,6 @@ function saveData() {
         console.error('Error saving data:', error);
     });
 }
-
-// Save button click
 
 // --- Function Calls ---
 getEarthquakeMap()
