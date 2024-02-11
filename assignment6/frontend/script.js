@@ -76,7 +76,7 @@ function getEarthquakeMap(){
 // Function to send a POST to save data
 function saveData() {
     console.log(store.earthquake)
-    fetch('http://localhost:8080/save_data', {
+    fetch('http://localhost:8000/save_data', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

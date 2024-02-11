@@ -7,6 +7,7 @@ def set_data(request):
     if request.method == 'POST':
         new_data = request.POST.get('data')
         data['current_data'] = new_data
+        print(data['current_data'])
         return JsonResponse({'message': 'Data updated'})
     else:
         return JsonResponse({'error': 'POST ERROR'})
