@@ -69,8 +69,8 @@ function getEarthquakeMap(){
         });
 }
 
-// Call the function to display the location of the first earthquake on a map
+// Call the function to display the location of the earthquake on the map
 getEarthquakeMap()
-// Call the function when the page loads
+
+// Call the function when the page loads (should this be replaced with React and events?)
 window.onload = getCurrentEarthquakes;
-// window.onload = getEarthquakeMap;
