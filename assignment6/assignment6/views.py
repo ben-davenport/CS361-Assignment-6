@@ -6,7 +6,6 @@ from datetime import datetime
 from django.db.models import Func, F
 from django.db.models.functions import ACos, Cos, Radians, Sin
 
-earthquake_data = {}
 @csrf_exempt
 def set_data(request):
     print(json.loads(request.body))
@@ -68,11 +67,9 @@ def get_closest_earthquake(latitude, longitude):
             Cos(latitude_rad) * Cos(F('lat_rad')) *
             Cos(Func(F('delta_lon') / 2, function='RADIANS'))
         ),
-        distance=Func(Func('central_angle', function='DEGREES'), function='ABS') * 60 * 1.1515  # Convert central angle to distance in miles
+        # convert angle to distance in miles
+        distance=Func(Func('central_angle', function='DEGREES'), function='ABS') * 60 * 1.1515
     ).order_by('distance').first()
-
-    if closest_earthquake.distance < 0.001:  # Adjust threshold as needed
-        closest_earthquake.distance = 0
 
     return closest_earthquake
 def get_closest_earthquake_view(request):
