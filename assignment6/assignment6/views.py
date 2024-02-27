@@ -50,6 +50,9 @@ def get_data(request):
 
     return JsonResponse({'data': serialized_earthquake})
 def get_closest_earthquake(latitude, longitude):
+    """
+    Given a latitude and longitude, calculates the closest earthquake
+    """
     # Distance calculation source assistance:
     # https://medium.com/analytics-vidhya/finding-nearest-pair-of-latitude-and-longitude-match-using-python-ce50d62af546
 
@@ -73,6 +76,9 @@ def get_closest_earthquake(latitude, longitude):
 
     return closest_earthquake
 def get_closest_earthquake_view(request):
+    """
+    Given a latitude and longitude, return the earthquake closest to the latitude and longitude from the database
+    """
     if request.method == 'GET':
         latitude = request.GET.get('latitude')
         longitude = request.GET.get('longitude')
