@@ -5,6 +5,8 @@ from .models import Earthquake
 from datetime import datetime
 from django.db.models import Func, F
 from django.db.models.functions import ACos, Cos, Radians, Sin
+from assignment6.listener import retrieve_weather_data
+import threading
 
 @csrf_exempt
 def set_data(request):
@@ -32,6 +34,28 @@ def set_data(request):
     else:
         return JsonResponse({'error': 'POST ERROR'})
 
+def get_weather(request):
+    latest_earthquake = Earthquake.objects.latest('time')
+    latitude, longitude = latest_earthquake.latitude, latest_earthquake.longitude
+    print(latitude, longitude)
+    data_received_event = threading.Event()
+    weather_data = None
+    def response_callback(data):
+        nonlocal weather_data
+        weather_data = data
+        data_received_event.set()
+    threading.Thread(target=lambda: retrieve_weather_data(latitude, longitude, response_callback), daemon=True).start()
+    if data_received_event.wait(timeout=30):
+        # Convert weather data to JSON
+        json_data = json.dumps(weather_data)
+
+        # Return JSON response
+        return JsonResponse({'data': weather_data})  # Return JsonResponse instead of plain JSON string
+    else:
+        print("A timeout has occurred while waiting for the weather data.")
+        return None
+
+
 @csrf_exempt
 def get_data(request):
     latest_earthquake = Earthquake.objects.latest('time')
@@ -47,7 +71,9 @@ def get_data(request):
         'tsunami': latest_earthquake.tsunami,
         'title': latest_earthquake.title
     }
-
+    # latitude, longitude = serialized_earthquake['latitude'], serialized_earthquake['longitude']
+    # print('getting weather')
+    # get_weather(latitude, longitude)
     return JsonResponse({'data': serialized_earthquake})
 def get_closest_earthquake(latitude, longitude):
     """
@@ -107,3 +133,6 @@ def get_closest_earthquake_view(request):
             return JsonResponse({'error': 'Latitude and longitude are required as query parameters'})
     else:
         return JsonResponse({'error': 'GET method is required'})
+
+
+# get_weather()

@@ -95,6 +95,33 @@ function saveData() {
     });
 }
 
+//function to get weather data from JJ's microservice
+function getWeather(){
+    fetch('http://localhost:8080/get-weather/', {
+        method: 'GET',
+        headers: {
+
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch weather data');
+        }
+        return response.json();
+    })
+    .then(weatherData => {
+        // Update the store with weather data
+        store.weather = weatherData;
+
+        // Do something with the weather data if needed
+        console.log('Weather data:', weatherData);
+    })
+    .catch(error => {
+        console.error('Error retrieving weather data from the microservice:', error);
+        // Handle the error
+    });
+}
+
 // --- Function Calls ---
 getEarthquakeMap()
 
@@ -104,4 +131,7 @@ window.onload = getCurrentEarthquakes;
 // --- Event Listeners ---
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("save-button").addEventListener('click', saveData);
+});
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("get-weather").addEventListener('click', getWeather);
 });
