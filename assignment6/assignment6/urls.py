@@ -1,9 +1,3 @@
-"""
-URL configuration for assignment6 project.
-Currently:
-/set-data with a POST will add data to the database
-/get-data with a GET will retrieve the most current data
-"""
 from django.contrib import admin
 from django.urls import path
 from assignment6.views import set_data, get_data, get_closest_earthquake_view, get_weather

@@ -12,11 +12,8 @@ function getCurrentEarthquakes() {
         .then(data => {
             // Get the earthquakes from the response features
             const earthquakes = data.features.slice(0, 1);
-
-            // Get the UL element to display the list
             const earthquakeList = document.getElementById('earthquake-list');
 
-            // Clear the list
             earthquakeList.innerHTML = '';
 
             // Iterate over each earthquake and add it to the list
@@ -30,7 +27,7 @@ function getCurrentEarthquakes() {
                 const listItem = document.createElement('li');
                 listItem.textContent = 'Magnitude: ' + magnitude + ', Location: ' + location;
 
-                // Add the list item to the UL element
+                // Add the list item to the UL
                 earthquakeList.appendChild(listItem);
             });
         })
@@ -40,8 +37,7 @@ function getCurrentEarthquakes() {
 }
 
 function getEarthquakeMap(){
-        // API endpoint URL for current earthquakes
-        // If I maintain the global store then I can get rid of this second API call
+    // API endpoint URL for current earthquakes
     const url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson';
 
     // Fetch data from the API
@@ -51,7 +47,6 @@ function getEarthquakeMap(){
             // Get the first earthquake from the response
             const firstEarthquake = data.features[0];
             const coordinates = firstEarthquake.geometry.coordinates;
-            // latitude, longitude = coordinates
             const latitude = coordinates[1];
             const longitude = coordinates[0];
 
@@ -76,7 +71,6 @@ function getEarthquakeMap(){
 // Function to send a POST to save data
 function saveData() {
     const save_data = store.earthquake
-    console.log(save_data)
     fetch('http://localhost:8000/set-data/', {
         method: 'POST',
         headers: {
@@ -101,7 +95,6 @@ function getWeather(){
     fetch('http://localhost:8000/get-weather/', {
         method: 'GET',
         headers: {
-
         }
     })
     .then(response => {
@@ -134,9 +127,8 @@ function displayWeather(weatherData){
 
 // --- Function Calls ---
 getEarthquakeMap()
-
-// Call the function when the page loads
 window.onload = getCurrentEarthquakes;
+
 
 // --- Event Listeners ---
 document.addEventListener('DOMContentLoaded', () => {

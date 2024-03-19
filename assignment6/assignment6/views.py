@@ -16,10 +16,14 @@ def set_data(request):
         timestamp = datetime.fromtimestamp(time_value / 1000)  # milliseconds to seconds
         formatted_time = timestamp.strftime('%Y-%m-%d %H:%M:%S')  # datetime to string
         earthquake = Earthquake.objects.create(
-            latitude=new_data['data']['geometry']['coordinates'][1], longitude=new_data['data']['geometry'][
-                'coordinates'][0], magnitude=new_data['data']['properties']['mag'], place=new_data[
-                'data']['properties']['place'], time=formatted_time, detail=new_data['data']['properties']['detail'],
-            status=new_data['data']['properties']['status'], tsunami=bool(new_data['data']['properties']['tsunami']),
+            latitude=new_data['data']['geometry']['coordinates'][1],
+            longitude=new_data['data']['geometry'][ 'coordinates'][0],
+            magnitude=new_data['data']['properties']['mag'],
+            place=new_data['data']['properties']['place'],
+            time=formatted_time,
+            detail=new_data['data']['properties']['detail'],
+            status=new_data['data']['properties']['status'],
+            tsunami=bool(new_data['data']['properties']['tsunami']),
             title=new_data['data']['properties']['title']
         )
         return JsonResponse({'message': 'Data updated'})
@@ -67,6 +71,7 @@ def get_data(request):
         'title': latest_earthquake.title
     }
     return JsonResponse({'data': earthquake_object})
+
 def get_closest_earthquake(latitude, longitude):
     """
     Given a latitude and longitude, calculates the closest earthquake

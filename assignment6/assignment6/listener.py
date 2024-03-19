@@ -25,7 +25,6 @@ def retrieve_weather_data(latitude, longitude, callback=None):
     sub_socket.connect("tcp://localhost:5556")
     sub_socket.subscribe(b"")
 
-
     # nonlocal to handle the ansychronous processing
     weather_data = None
 
