@@ -14,9 +14,22 @@
         <div id="container">
             <h1>Most Recent Earthquakes</h1>
             <ul id="earthquake-list"></ul>
+            <p id="warning">Loaded data can be refreshed for updated data or saved using the 'Save Earthquake to
+                Database' button above.
+            </p>
             <button id="save-button">Save Earthquake to Database</button>
-            <button id="get-weather">Get Weather Data</button>
             <div id="map"></div>
+            <button id="get-weather">Get Weather Data</button>
+            <div id="weather-data">
+                <h2>Other Data on the Database's Newest Earthquake:</h2>
+                <ul>
+                    <li><strong>Current Temperature Average:</strong> <span id="current-temp"></span></li>
+                    <li><strong>Max Temperature Average:</strong> <span id="max-temp"></span></li>
+                    <li><strong>Min Temperature Average:</strong> <span id="min-temp"></span></li>
+                </ul>
+            </div>
         </div>
     </body>
 </html>
+
+

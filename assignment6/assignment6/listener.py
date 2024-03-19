@@ -1,6 +1,5 @@
 import zmq
 import threading
-import time
 
 def retrieve_weather_data(latitude, longitude, callback=None):
     """
@@ -27,7 +26,7 @@ def retrieve_weather_data(latitude, longitude, callback=None):
     sub_socket.subscribe(b"")
 
 
-    # strictly speaking, this is out of scope hence the nonlocal below to handle the ansychronous processing
+    # nonlocal to handle the ansychronous processing
     weather_data = None
 
     # Define response function
@@ -35,8 +34,6 @@ def retrieve_weather_data(latitude, longitude, callback=None):
         nonlocal weather_data
         while True:
             response = sub_socket.recv_json()
-            print("Received weather data:", response)
-            # use a callback to handle data manipulation and simplify the listener process
             if callback:
                 callback(response)
 

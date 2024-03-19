@@ -76,3 +76,40 @@ h1 {
     text-decoration: none; /* Remove underline */
     transition: background-color 0.3s; /* Add transition for hover effect */
 }
+#weather-data {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+#weather-data h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+#weather-data ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#weather-data ul li {
+    margin-bottom: 10px;
+}
+
+#weather-data ul li strong {
+    font-weight: bold;
+}
+
+#weather-data ul li span {
+    font-weight: normal;
+}
+
+#warning {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 10px;
+}

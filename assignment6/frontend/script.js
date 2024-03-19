@@ -89,6 +89,7 @@ function saveData() {
             throw new Error('Save failed');
         }
         console.log('Data saved successfully');
+        document.getElementById("save-button").dispatchEvent(new Event('dataSaved'));
     })
     .catch(error => {
         console.error('Error saving data:', error);
@@ -97,7 +98,7 @@ function saveData() {
 
 //function to get weather data from JJ's microservice
 function getWeather(){
-    fetch('http://localhost:8080/get-weather/', {
+    fetch('http://localhost:8000/get-weather/', {
         method: 'GET',
         headers: {
 
@@ -110,17 +111,26 @@ function getWeather(){
         return response.json();
     })
     .then(weatherData => {
-        // Update the store with weather data
         store.weather = weatherData;
-
-        // Do something with the weather data if needed
-        console.log('Weather data:', weatherData);
+        displayWeather(weatherData);
     })
     .catch(error => {
         console.error('Error retrieving weather data from the microservice:', error);
-        // Handle the error
     });
 }
+
+function displayWeather(weatherData){
+        // Fill in weather data
+        const minTempElement = document.getElementById("min-temp");
+        minTempElement.textContent = `${weatherData.data.min_temp_avg}°C`;
+
+        const maxTempElement = document.getElementById("max-temp");
+        maxTempElement.textContent = `${weatherData['data']['max_temp_avg']}°C`;
+
+        const currentTempElement = document.getElementById("current-temp");
+        currentTempElement.textContent = `${weatherData.data.current_temp_avg}°C`;
+    }
+
 
 // --- Function Calls ---
 getEarthquakeMap()
@@ -130,8 +140,14 @@ window.onload = getCurrentEarthquakes;
 
 // --- Event Listeners ---
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById("save-button").addEventListener('click', saveData);
+    const saveButton = document.getElementById("save-button")
+    saveButton.addEventListener('click', saveData);
+    saveButton.addEventListener('dataSaved',()=> {
+        saveButton.textContent = 'Data Saved';
+        saveButton.disabled = true;
+    });
 });
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("get-weather").addEventListener('click', getWeather);
+
 });
